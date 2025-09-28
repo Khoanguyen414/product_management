@@ -1,6 +1,4 @@
-package com.example.products_management.dto.request;
-
-import java.time.LocalDate;
+package com.example.products_management.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,14 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
-public class UserUpdateRequest {
-    String username;
-    String password;
-    String firstName;
-    String lastName;
-    LocalDate dob;
+public class PermissionResponse {
+    String name;
+    String description;
 }
