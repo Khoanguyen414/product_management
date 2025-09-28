@@ -2,16 +2,20 @@ package com.example.products_management.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.products_management.dto.request.UserCreationRequest;
 import com.example.products_management.dto.request.UserUpdateRequest;
 import com.example.products_management.dto.response.ApiResponse;
-import com.example.products_management.entity.User;
+import com.example.products_management.dto.response.UserResponse;
 import com.example.products_management.service.UserService;
 
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,32 +28,48 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserController {
-
-    @Autowired
-    private UserService userService;
+    UserService userService;
 
     @GetMapping
-    List<User> getAllUsers() {
-        return userService.getAllUsers();
+    ApiResponse<List<UserResponse>> getAllUsers() {
+        var authenication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username: {}", authenication.getName());
+        authenication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
+
+        return ApiResponse.<List<UserResponse>>builder()
+            .result(userService.getAllUsers())
+            .build();
     }
 
     @GetMapping("/{userId}")
-    User getUser(@PathVariable("userId") String userId) {
-        return userService.getUser(userId);
+    ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId) {
+        return ApiResponse.<UserResponse>builder()
+            .result(userService.getUser(userId))
+            .build();
+    }
+
+     @GetMapping("/my_profile")
+    ApiResponse<UserResponse> getMyProfile() {
+        return ApiResponse.<UserResponse>builder()
+            .result(userService.getMyProfile())
+            .build();
     }
 
     @PostMapping
-    ApiResponse<User> creatUser(@RequestBody @Valid UserCreationRequest request) {
-        ApiResponse<User> apiResponse = new ApiResponse<>();
+    ApiResponse<UserResponse> creatUser(@RequestBody @Valid UserCreationRequest request) {
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setCode(1000);
         apiResponse.setResult(userService.createUser(request));
         return apiResponse;
     }
 
     @PutMapping("/{userId}")
-    User updateUser(@PathVariable("userId") String userId, @RequestBody UserUpdateRequest request) {
-        return userService.updatUser(userId, request);
+    UserResponse updateUser(@PathVariable("userId") String userId, @RequestBody UserUpdateRequest request) {
+        return userService.updateUser(userId, request);
     }
 
     @DeleteMapping("/{userId}")
