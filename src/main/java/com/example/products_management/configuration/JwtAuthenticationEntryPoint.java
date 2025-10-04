@@ -7,7 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.example.products_management.dto.response.ApiResponse;
-import com.example.products_management.exception.ErrorCode;
+import com.example.products_management.enums.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;

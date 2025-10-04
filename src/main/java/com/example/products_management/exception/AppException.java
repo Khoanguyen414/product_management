@@ -1,5 +1,7 @@
 package com.example.products_management.exception;
 
+import com.example.products_management.enums.ErrorCode;
+
 public class AppException extends RuntimeException{
     
     public AppException(ErrorCode errorCode) {

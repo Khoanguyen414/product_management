@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.example.products_management.dto.response.ApiResponse;
+import com.example.products_management.enums.ErrorCode;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -15,8 +16,8 @@ public class GlobalExceptionHandler {
     ResponseEntity<ApiResponse> handlingException(RuntimeException exception) {
         ApiResponse apiResponse = new ApiResponse<>();
 
-        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+        apiResponse.setCode(ErrorCode.UNAUTHORIZED.getCode());
+        apiResponse.setMessage(ErrorCode.UNAUTHORIZED.getMessage());
         return ResponseEntity.badRequest().body(apiResponse);
     }
 

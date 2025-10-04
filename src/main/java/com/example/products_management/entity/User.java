@@ -1,6 +1,7 @@
 package com.example.products_management.entity;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
