@@ -59,7 +59,7 @@ public class UserService {
     
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new AppException(ErrorCode.UNAUTHORIZED);
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
         
         User user = userMapper.toUser(request);
