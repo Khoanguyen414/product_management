@@ -2,7 +2,9 @@
 
     import java.time.LocalDate;
 
-    import jakarta.validation.constraints.Size;
+import com.example.products_management.validator.DobConstraint;
+
+import jakarta.validation.constraints.Size;
     import lombok.AccessLevel;
     import lombok.AllArgsConstructor;
     import lombok.Builder;
@@ -24,5 +26,7 @@
         String password;
         String firstName;
         String lastName;
+
+        @DobConstraint(min = 16, message = "INVALID_DOB")
         LocalDate dob;
     }
